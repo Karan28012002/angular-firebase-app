@@ -1,0 +1,21 @@
+<mat-sidenav-container style="height: 100vh;">
+  <mat-sidenav mode="side" opened>
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <app-header></app-header>
+
+    </mat-toolbar>
+
+    <div style="padding: 24px;">
+        <router-outlet></router-outlet>
+        <app-support></app-support>
+    </div>
+
+    <mat-toolbar color="accent">
+      <app-footer></app-footer>
+    </mat-toolbar>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,11 @@
+.footer-toolbar {
+  justify-content: space-between;
+  .spacer {
+    flex: 1 1 auto;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+    margin-left: 8px;
+  }
+}
