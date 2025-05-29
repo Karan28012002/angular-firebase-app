@@ -4,10 +4,13 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class TokenService {
-  private secret = 'My Own JWT Secret';
+  private secret = '🔥MySuperSecretKeyOnlyForDemo🔥'; // Keep in frontend ONLY for testing!
 
   private base64url(str: string): string {
-    return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    return btoa(unescape(encodeURIComponent(str)))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
   }
 
   private async sign(data: string): Promise<string> {
@@ -22,8 +25,14 @@ export class TokenService {
       typ: 'MYTOKEN',
     };
 
+    const defaultPayload = {
+      ...payload,
+      exp: Date.now() + 5 * 60 * 1000, // expires in 5 minutes
+      aud: 'my-angular-app.local', // restrict to your app
+    };
+
     const encodedHeader = this.base64url(JSON.stringify(header));
-    const encodedPayload = this.base64url(JSON.stringify(payload));
+    const encodedPayload = this.base64url(JSON.stringify(defaultPayload));
     const signature = await this.sign(`${encodedHeader}.${encodedPayload}`);
 
     return `${encodedHeader}.${encodedPayload}.${signature}`;
@@ -35,13 +44,23 @@ export class TokenService {
 
     const [header, payload, signature] = parts;
     const expectedSig = await this.sign(`${header}.${payload}`);
-    return expectedSig === signature;
+    if (expectedSig !== signature) return false;
+
+    // Check expiry and audience
+    const decodedPayload = this.decodePayload(token);
+    if (!decodedPayload) return false;
+
+    const now = Date.now();
+    return (
+      decodedPayload.exp > now && decodedPayload.aud === 'my-angular-app.local'
+    );
   }
 
   decodePayload<T = any>(token: string): T | null {
     try {
       const parts = token.split('.');
-      return JSON.parse(atob(parts[1]));
+      const decoded = decodeURIComponent(escape(atob(parts[1])));
+      return JSON.parse(decoded);
     } catch {
       return null;
     }
