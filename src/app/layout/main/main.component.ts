@@ -8,22 +8,28 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-main',
   standalone: true,
   imports: [
     CommonModule,
-    HeaderComponent,
     FooterComponent,
-    SidebarComponent,
     SupportComponent,
     MatSidenavModule,
     MatToolbarModule,
     MatButtonModule,
+    MatIconModule,
     RouterOutlet,
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
 })
-export class MainComponent {}
+export class MainComponent {
+  opened = false;
+
+  toggleSidebar() {
+    this.opened = !this.opened;
+  }
+}
