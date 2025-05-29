@@ -1,11 +1,15 @@
 .footer-toolbar {
+  background: linear-gradient(90deg, #3f51b5 0%, #9c27b0 100%) !important;
+  color: #fff !important;
   justify-content: space-between;
   .spacer {
     flex: 1 1 auto;
   }
   a {
-    color: inherit;
+    color: #fff;
     text-decoration: none;
     margin-left: 8px;
+    opacity: 0.85;
+    &:hover { opacity: 1; }
   }
 }

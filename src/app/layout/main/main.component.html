@@ -1,60 +1,29 @@
-<mat-sidenav-container class="main-layout" autosize>
+<mat-sidenav-container class="main-layout" autosize [ngClass]="{'sidenav-open': opened}">
+  <mat-sidenav #sidenav mode="side" [opened]="opened" class="sidenav" fixedInViewport>
+    <app-sidebar></app-sidebar>
+    <button mat-icon-button (click)="sidenav.toggle()" class="close-btn" aria-label="Close sidebar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-sidenav>
 
-    <!-- Collapsible Sidebar -->
-    <mat-sidenav #sidenav mode="side" [opened]="opened" class="sidenav" fixedInViewport>
-        <div class="sidebar-content">
-            <h3>Join Us</h3>
-            <p>Sign up quickly using:</p>
+  <mat-sidenav-content class="main-content">
+    <!-- Fixed Header -->
+    <mat-toolbar color="primary" class="fixed-header">
+      <button mat-icon-button (click)="toggleSidebar()" class="toggle-btn" aria-label="Toggle sidebar">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <app-header></app-header>
+    </mat-toolbar>
 
-            <!-- Use these inside your sidebar-content -->
-            <button mat-raised-button color="warn" class="social-btn">
-                <mat-icon>Google</mat-icon>&nbsp; Google
-            </button>
+    <!-- Scrollable Content -->
+    <div class="scrollable-content">
+      <router-outlet></router-outlet>
+      <app-support></app-support>
+    </div>
 
-            <button mat-raised-button color="primary" class="social-btn">
-                <mat-icon>facebook</mat-icon>&nbsp; Facebook
-            </button>
-
-            <button mat-raised-button color="accent" class="social-btn">
-                <mat-icon >linkedin</mat-icon>&nbsp; LinkedIn
-            </button>
-
-            <button mat-raised-button color="primary" class="social-btn">
-                <mat-icon>code</mat-icon>&nbsp; GitHub
-            </button>
-
-            <button mat-raised-button color="accent" class="social-btn">
-                <mat-icon>cloud</mat-icon>&nbsp; Microsoft
-            </button>
-
-            <button mat-raised-button color="warn" class="social-btn">
-                <mat-icon>camera</mat-icon>&nbsp; Snapchat
-            </button>
-        </div>
-    </mat-sidenav>
-
-    <!-- Main content -->
-    <mat-sidenav-content class="main-content">
-        <mat-toolbar color="primary">
-            <button mat-icon-button (click)="toggleSidebar()" class="toggle-btn" aria-label="Toggle sidebar">
-                <mat-icon>menu</mat-icon>
-            </button>
-            <span>Our Simple Platform</span>
-        </mat-toolbar>
-
-        <div class="main-body">
-            <div class="welcome">
-                <h1>Welcome!</h1>
-                <p>If you're new here, let's get you signed up quickly.</p>
-                <button mat-flat-button color="accent" (click)="toggleSidebar()">Sign Up with Social Media</button>
-            </div>
-
-            <router-outlet></router-outlet>
-            <app-support></app-support>
-        </div>
-
-        <mat-toolbar color="accent">
-            <app-footer></app-footer>
-        </mat-toolbar>
-    </mat-sidenav-content>
+    <!-- Fixed Footer -->
+    <mat-toolbar color="accent" class="fixed-footer">
+      <app-footer></app-footer>
+    </mat-toolbar>
+  </mat-sidenav-content>
 </mat-sidenav-container>

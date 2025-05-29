@@ -1,16 +1,40 @@
-mat-nav-list a.mat-list-item {
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  padding: 24px 12px;
+}
+
+.social-btn {
   display: flex;
   align-items: center;
-  gap: 12px;
-}
-
-mat-icon {
-  font-size: 24px;
-  margin-right: 8px;
-  color: #1976d2;
-}
-
-span {
+  justify-content: flex-start;
+  border-radius: 24px !important;
   font-size: 1rem;
   font-weight: 500;
+  text-transform: none;
+  box-shadow: none;
+  padding: 8px 20px;
+  background: #fff;
+  color: #222;
+  border: 1px solid #eee;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.social-btn mat-icon {
+  font-size: 22px;
+  margin-right: 12px;
+  color: #555;
+}
+
+.social-btn:hover {
+  background: #f3e6fa;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+h3, p {
+  margin-bottom: 12px;
+  color: #e1bfe6;
+  font-weight: 600;
 }

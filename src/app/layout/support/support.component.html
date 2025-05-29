@@ -1,1 +1,21 @@
-<p>support works!</p>
+<button mat-fab color="accent" class="support-fab" [matMenuTriggerFor]="supportMenu" aria-label="Support">
+  <mat-icon>support_agent</mat-icon>
+</button>
+<mat-menu #supportMenu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>help_outline</mat-icon>
+    <span>Help</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>privacy_tip</mat-icon>
+    <span>Privacy</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>contact_mail</mat-icon>
+    <span>Contact</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>email</mat-icon>
+    <span>Email</span>
+  </button>
+</mat-menu>

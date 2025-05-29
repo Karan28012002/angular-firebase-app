@@ -1,0 +1,22 @@
+<section class="welcome-section">
+  <div class="welcome-text">
+    <h1>Welcome to EMS Platform!</h1>
+    <p>
+      Are you new to our platform? Register instantly using your social media account or sign up with your email and verify in just seconds.
+    </p>
+  </div>
+  <div class="register-area">
+    <button mat-raised-button color="accent" (click)="onSocialSignup()">
+      <mat-icon>person_add</mat-icon>
+      Sign Up with Social Media
+    </button>
+    <span class="or-divider">OR</span>
+    <form class="email-register-form">
+      <mat-form-field appearance="outline" class="email-field">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" placeholder="Enter your email" required>
+      </mat-form-field>
+      <button mat-flat-button color="primary" type="submit">Register & Verify</button>
+    </form>
+  </div>
+</section>
