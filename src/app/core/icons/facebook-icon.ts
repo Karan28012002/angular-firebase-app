@@ -1,0 +1,9 @@
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+
+export function registerFacebookIcon(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  iconRegistry.addSvgIcon(
+    'facebook-icon',
+    sanitizer.bypassSecurityTrustResourceUrl('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkPSJNMTIgMkM2LjQ3NyAyIDIgNi40NzcgMiAxMmMwIDQuOTkxIDMuNjU3IDkuMTI4IDguNDM4IDkuODc4di02Ljk4N0g3Ljg5NlYxMmgzLjU0MlY5Ljc5N2MwLTMuNDc1IDIuMDYzLTUuMzkzIDUuMjM0LTUuMzkzIDEuNTE2IDAgMy4xMjIgLjExNSAzLjEyMi4xMTV2My40MjVoLTEuNzYxYy0xLjczNSAwLTIuMjg4IDEuMDc4LTIuMjg4IDIuMTgydjIuNTg1aDMuNTg3bC0uNTczIDMuOTY4aC0zLjAxNHY2Ljk4OEMxOC4zNDMgMjEuMTI4IDIyIDE2Ljk5MSAyMiAxMmMwLTUuNTIzLTQuNDc3LTEwLTEwLTEweiIvPjwvc3ZnPg==')
+  );
+} 

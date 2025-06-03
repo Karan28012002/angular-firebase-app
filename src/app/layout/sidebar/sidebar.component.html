@@ -1,29 +1,28 @@
 <div class="sidebar-content">
+  <ng-container *ngIf="!loggedIn">
     <h3>Join Us</h3>
     <p>Sign up quickly using:</p>
 
-    <!-- Use these inside your sidebar-content -->
-    <button mat-raised-button color="warn" class="social-btn">
-        <mat-icon>Google</mat-icon>&nbsp; Google
-    </button>
+    <asl-google-signin-button
+      type="standard"
+      size="medium"
+      text="continue_with"
+      theme="outline"
+      shape="rectangular"
+      (success)="handleGoogleLoginSuccess()"
+      (error)="handleGoogleLoginError()">
+    </asl-google-signin-button>
 
-    <button mat-raised-button color="primary" class="social-btn">
-        <mat-icon>facebook</mat-icon>&nbsp; Facebook
-    </button>
+  </ng-container>
 
-    <button mat-raised-button color="accent" class="social-btn">
-        <mat-icon>linkedin</mat-icon>&nbsp; LinkedIn
-    </button>
-
-    <button mat-raised-button color="primary" class="social-btn">
-        <mat-icon>code</mat-icon>&nbsp; GitHub
-    </button>
-
-    <button mat-raised-button color="accent" class="social-btn">
-        <mat-icon>cloud</mat-icon>&nbsp; Microsoft
-    </button>
-
-    <button mat-raised-button color="warn" class="social-btn">
-        <mat-icon>camera</mat-icon>&nbsp; Snapchat
-    </button>
+  <ng-container *ngIf="loggedIn && user">
+    <div class="user-profile">
+      <img [src]="user.photoUrl" alt="Profile picture" class="profile-picture" *ngIf="user.photoUrl">
+      <h3>Welcome, {{ user.name }}</h3>
+      <p>{{ user.email }}</p>
+      <button mat-raised-button color="warn" class="signout-btn" (click)="signOut()">
+        <mat-icon>logout</mat-icon>&nbsp; Sign Out
+      </button>
+    </div>
+  </ng-container>
 </div>
