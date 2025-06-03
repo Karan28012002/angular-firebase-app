@@ -1,28 +1,18 @@
-<div class="sidebar-content">
-  <ng-container *ngIf="!loggedIn">
-    <h3>Join Us</h3>
-    <p>Sign up quickly using:</p>
-
-    <asl-google-signin-button
-      type="standard"
-      size="medium"
-      text="continue_with"
-      theme="outline"
-      shape="rectangular"
-      (success)="handleGoogleLoginSuccess()"
-      (error)="handleGoogleLoginError()">
-    </asl-google-signin-button>
-
-  </ng-container>
-
-  <ng-container *ngIf="loggedIn && user">
-    <div class="user-profile">
-      <img [src]="user.photoUrl" alt="Profile picture" class="profile-picture" *ngIf="user.photoUrl">
-      <h3>Welcome, {{ user.name }}</h3>
-      <p>{{ user.email }}</p>
-      <button mat-raised-button color="warn" class="signout-btn" (click)="signOut()">
-        <mat-icon>logout</mat-icon>&nbsp; Sign Out
-      </button>
+<div class="sidebar-nav">
+  <div class="sidebar-user" *ngIf="user">
+    <img [src]="user.photoUrl" alt="Profile picture" class="sidebar-user-avatar" *ngIf="user.photoUrl">
+    <div class="sidebar-user-info">
+      <div class="sidebar-user-name">{{ user.name }}</div>
+      <div class="sidebar-user-email">{{ user.email }}</div>
     </div>
-  </ng-container>
+  </div>
+  <nav class="sidebar-links">
+    <a mat-list-item routerLink="/dashboard" routerLinkActive="active"><mat-icon>dashboard</mat-icon> Dashboard</a>
+    <a mat-list-item routerLink="/profile" routerLinkActive="active"><mat-icon>person</mat-icon> Profile</a>
+    <a mat-list-item routerLink="/settings" routerLinkActive="active"><mat-icon>settings</mat-icon> Settings</a>
+    <a mat-list-item routerLink="/help" routerLinkActive="active"><mat-icon>help_outline</mat-icon> Help</a>
+  </nav>
+  <button mat-raised-button color="warn" class="sidebar-signout-btn" (click)="signOut()">
+    <mat-icon>logout</mat-icon>&nbsp; Sign Out
+  </button>
 </div>

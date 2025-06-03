@@ -1,7 +1,8 @@
 <mat-sidenav-container class="main-layout" autosize [ngClass]="{'sidenav-open': opened}">
-  <mat-sidenav #sidenav mode="side" [opened]="opened" class="sidenav" fixedInViewport>
+  <!-- Only show the sidebar if logged in -->
+  <mat-sidenav *ngIf="loggedIn" #sidenav mode="side" [opened]="opened" class="sidenav" fixedInViewport style="overflow-x: hidden;">
     <app-sidebar></app-sidebar>
-    <button mat-icon-button (click)="sidenav.toggle()" class="close-btn" aria-label="Close sidebar">
+    <button mat-icon-button (click)="sidenav.toggle(); toggleSidebar();" class="close-btn" aria-label="Close sidebar">
       <mat-icon>close</mat-icon>
     </button>
   </mat-sidenav>
@@ -9,7 +10,8 @@
   <mat-sidenav-content class="main-content">
     <!-- Fixed Header -->
     <mat-toolbar color="primary" class="fixed-header">
-      <button mat-icon-button (click)="toggleSidebar()" class="toggle-btn" aria-label="Toggle sidebar">
+      <!-- Only show the toggle button if logged in -->
+      <button *ngIf="loggedIn" mat-icon-button (click)="toggleSidebar() " class="toggle-btn" aria-label="Toggle sidebar">
         <mat-icon>menu</mat-icon>
       </button>
       <app-header></app-header>

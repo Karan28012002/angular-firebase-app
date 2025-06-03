@@ -1,0 +1,87 @@
+<div class="admin-panel-container">
+    <h2>Admin Dashboard</h2>
+  
+    <mat-grid-list [cols]="gridCols" rowHeight="200px" gutter="16">
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>Total Users</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <div class="card-value">{{ userStats.totalUsers }}</div>
+            <div class="card-description">Registered users</div>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+  
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>Active Sessions</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <div class="card-value">{{ userStats.activeSessions }}</div>
+            <div class="card-description">Currently logged in</div>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+  
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>Recent Registrations</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+             <div class="card-value">{{ userStats.recentRegistrations }}</div>
+            <div class="card-description">Last 7 days</div>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+  
+       <mat-grid-tile [colspan]="recentActivityColspan" [rowspan]="1">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>Recent User Activity</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+             <ul>
+              <li *ngFor="let activity of recentActivities">
+                {{ activity.user }} - {{ activity.action }} at {{ activity.time | date:'shortTime' }}
+              </li>
+             </ul>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+  
+       <mat-grid-tile [colspan]="userListColspan" [rowspan]="2">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>User List</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content user-list-card">
+            <mat-list>
+              <mat-list-item *ngFor="let user of userList">
+                <img matListItemAvatar [src]="user.avatar" alt="User Avatar">
+                <div matListItemTitle>{{ user.name }}</div>
+                <div matListItemLine>{{ user.email }}</div>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+  
+       <mat-grid-tile [colspan]="systemStatusColspan" [rowspan]="2">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>System Status</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <p>Database Status: <span [ngClass]="systemStatus.dbStatus === 'Online' ? 'status-online' : 'status-offline'">{{ systemStatus.dbStatus }}</span></p>
+            <p>API Service: <span [ngClass]="systemStatus.apiStatus === 'Online' ? 'status-online' : 'status-offline'">{{ systemStatus.apiStatus }}</span></p>
+            <p>Last Updated: {{ systemStatus.lastUpdated | date:'short' }}</p>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+  
+    </mat-grid-list>
+  </div>

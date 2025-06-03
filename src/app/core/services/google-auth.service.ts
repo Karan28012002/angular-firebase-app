@@ -12,7 +12,7 @@ export class GoogleAuthService {
   async loginWithGoogle(idToken: string): Promise<any> {
     return await firstValueFrom(
       this.http.post<any>(
-        environment.apiBaseUrl + '/Auth/LoginWithGoogle',
+        environment.apiBaseUrl + 'Auth/LoginWithGoogle',
         idToken,
         {
           headers: { 'Content-Type': 'application/json' },

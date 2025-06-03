@@ -46,32 +46,8 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  // ✅ Triggered when Google login succeeds
-  async handleGoogleLoginSuccess() {
-    try {
-      const user = await this.socialAuthService.signIn(
-        GoogleLoginProvider.PROVIDER_ID
-      );
-      if (user) {
-        // Send the ID token to your backend
-        // const response = await this.googleService.loginWithGoogle(user.idToken);
-        // console.log('Backend response:', response);
-        // // Store user details in localStorage or a service
-        localStorage.setItem('user', JSON.stringify(user));
-      }
-    } catch (error) {
-      console.error('Google Sign-In error:', error);
-    }
-  }
-
-  // ✅ Triggered if login fails
-  handleGoogleLoginError() {
-    console.error('Google Sign-In error:');
-  }
-
-  signOut(): void {
+  signOut() {
     this.socialAuthService.signOut();
-    localStorage.removeItem('user');
     this.user = null;
     this.loggedIn = false;
   }

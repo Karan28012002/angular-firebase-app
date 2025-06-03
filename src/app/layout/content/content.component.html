@@ -1,22 +1,82 @@
-<section class="welcome-section">
-  <div class="welcome-text">
-    <h1>Welcome to EMS Platform!</h1>
-    <p>
-      Are you new to our platform? Register instantly using your social media account or sign up with your email and verify in just seconds.
-    </p>
+
+<div class="content-login-wrapper" *ngIf="!loggedIn">
+  <div class="sidebar-content improved-sidebar-v2">
+    <div class="sidebar-bg"></div>
+    <div class="sidebar-card">
+      <div class="sidebar-header">
+        <img src="assets/logo.svg" alt="App Logo" class="sidebar-logo" *ngIf="false">
+        <h2>Welcome!</h2>
+        <p class="subtitle">Sign in to access your dashboard</p>
+      </div>
+
+      <div class="login-section">
+        <asl-google-signin-button
+          type="standard"
+          size="large"
+          text="continue_with"
+          theme="filled_blue"
+          shape="pill"
+          (success)="handleGoogleLoginSuccess()"
+          (error)="handleGoogleLoginError()">
+        </asl-google-signin-button>
+      </div>
+
+      <div class="divider">
+        <span>or</span>
+      </div>
+
+      <div class="info-section">
+        <p>Don't have an account? <a  class="signup-link" (click)="openRegister()">Sign up</a></p>
+        <p class="privacy-note">By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+      </div>
+    </div>
   </div>
-  <div class="register-area">
-    <button mat-raised-button color="accent" (click)="onSocialSignup()">
-      <mat-icon>person_add</mat-icon>
-      Sign Up with Social Media
-    </button>
-    <span class="or-divider">OR</span>
-    <form class="email-register-form">
-      <mat-form-field appearance="outline" class="email-field">
+</div>
+
+<!-- Registration Modal/Card -->
+<div class="register-modal" *ngIf="showRegister">
+  <div class="register-card">
+    <button class="close-btn" (click)="closeRegister()">&times;</button>
+    <h2>Sign Up</h2>
+    <!-- Email Form -->
+    <form *ngIf="!otpSent" (ngSubmit)="sendOtp()">
+      <mat-form-field appearance="outline" class="register-field">
         <mat-label>Email</mat-label>
-        <input matInput type="email" placeholder="Enter your email" required>
+        <input matInput type="email" [(ngModel)]="registerEmail" name="registerEmail" required autocomplete="email">
       </mat-form-field>
-      <button mat-flat-button color="primary" type="submit">Register & Verify</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="loading || !registerEmail">
+        {{ loading ? 'Sending OTP...' : 'Send OTP' }}
+      </button>
     </form>
+    <!-- OTP Form -->
+    <form *ngIf="otpSent" (ngSubmit)="verifyOtp()">
+      <mat-form-field appearance="outline" class="register-field">
+        <mat-label>OTP</mat-label>
+        <input matInput type="text" [(ngModel)]="otp" name="otp" required autocomplete="one-time-code">
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" [disabled]="loading || !otp">
+        {{ loading ? 'Verifying...' : 'Verify OTP' }}
+      </button>
+    </form>
+    <div class="register-message" *ngIf="message">{{ message }}</div>
+    <div class="register-error" *ngIf="error">{{ error }}</div>
   </div>
-</section>
+</div>
+
+<div class="content-user-wrapper" *ngIf="loggedIn && userDetails">
+  <div class="user-profile-card">
+    <img [src]="userDetails.photos?.[0]?.url || user?.photoUrl" alt="Profile" class="profile-pic">
+    <h2>{{ userDetails.names?.[0]?.displayName || user?.name }}</h2>
+    <p class="user-email">{{ userDetails.emailAddresses?.[0]?.value || user?.email }}</p>
+    <div class="user-extra">
+      <div *ngIf="userDetails.genders?.[0]?.value">
+        <strong>Gender:</strong> {{ userDetails.genders[0].value }}
+      </div>
+      <div *ngIf="userDetails.birthdays?.[0]?.date">
+        <strong>Birthday:</strong>
+        {{ userDetails.birthdays[0].date.year }}/{{ userDetails.birthdays[0].date.month }}/{{ userDetails.birthdays[0].date.day }}
+      </div>
+    </div>
+    <button mat-raised-button color="warn" (click)="signOut()">Sign Out</button>
+  </div>
+</div>

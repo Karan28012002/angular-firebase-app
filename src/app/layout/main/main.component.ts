@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
 import { SidebartoggleService } from '../../core/services/sidebartoggle.service';
+import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 @Component({
   selector: 'app-main',
   standalone: true,
@@ -38,10 +39,18 @@ import { SidebartoggleService } from '../../core/services/sidebartoggle.service'
 export class MainComponent {
   opened = false;
   private sidebarSub: Subscription;
-
-  constructor(private sidebarService: SidebartoggleService) {
+  loggedIn = false;
+  user: SocialUser | null = null;
+  constructor(private sidebarService: SidebartoggleService,private authService: SocialAuthService) {
     this.sidebarSub = this.sidebarService.sidebarOpen$.subscribe(() => {
       this.toggleSidebar();
+    });
+  }
+  
+  ngOnInit() {
+    this.authService.authState.subscribe((user) => {
+      this.user = user;
+      this.loggedIn = !!user;
     });
   }
 

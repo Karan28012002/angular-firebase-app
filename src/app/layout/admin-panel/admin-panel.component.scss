@@ -1,0 +1,137 @@
+.admin-panel-container {
+    padding: 20px;
+    background-color: #f0f2f5; // Light background for the dashboard area
+    min-height: calc(100vh - 112px); // Adjust based on your header/footer height
+  }
+  
+  h2 {
+    color: #3a006a; // Deep purple from theme
+    margin-bottom: 25px;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  
+  .dashboard-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    display: flex; // Use flexbox for internal layout
+    flex-direction: column;
+  
+    mat-card-header {
+      padding: 15px 20px;
+      border-bottom: 1px solid #eee;
+      background-color: #fff;
+      mat-card-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #512da8; // Theme primary color
+      }
+    }
+  
+    .dashboard-card-content {
+      padding: 20px;
+      flex-grow: 1; // Allow content to take available space
+      display: flex; // Use flexbox for content layout
+      flex-direction: column;
+  
+      .card-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #673ab7; // Theme accent color
+        margin-bottom: 5px;
+      }
+  
+      .card-description {
+        font-size: 0.9rem;
+        color: #757575;
+      }
+  
+      // Styles for the recent activity list
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+  
+        li {
+          padding: 8px 0;
+          border-bottom: 1px solid #eee;
+          font-size: 0.95rem;
+          color: #555;
+  
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+  
+      // Styles for the user list card
+      &.user-list-card {
+        padding: 0;
+  
+        mat-list {
+          padding: 0;
+  
+          mat-list-item {
+            padding: 10px 20px;
+            border-bottom: 1px solid #eee;
+  
+            &:last-child {
+              border-bottom: none;
+            }
+  
+            img[matListItemAvatar] {
+              border-radius: 50%;
+              margin-right: 15px;
+              border: 1px solid #ddd;
+            }
+  
+            .mat-list-item-title {
+              font-weight: 600;
+              color: #333;
+            }
+  
+            .mat-list-item-line {
+              color: #666;
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+  
+      // Styles for system status
+      p {
+        margin-bottom: 10px;
+        font-size: 1rem;
+        color: #555;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+  
+        span {
+          font-weight: 600;
+        }
+      }
+  
+      .status-online {
+        color: #4caf50; // Green color for online status
+      }
+  
+      .status-offline {
+        color: #f44336; // Red color for offline status
+      }
+    }
+  }
+  
+  // Responsive adjustments for grid
+  mat-grid-list {
+    ::ng-deep .mat-grid-tile .mat-figure {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      justify-content: flex-start; // Align content to the top
+      align-items: stretch; // Stretch content horizontally
+    }
+  }

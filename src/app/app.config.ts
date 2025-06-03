@@ -21,12 +21,15 @@ export const appConfig: ApplicationConfig = {
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
-        autoLogin: false,
+        autoLogin: true,
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
-              '363830819140-1n88f6d2jlbqlha6tc1vf4dd1gkmlf9m.apps.googleusercontent.com'
+              '363830819140-1n88f6d2jlbqlha6tc1vf4dd1gkmlf9m.apps.googleusercontent.com',
+              {
+                scopes: 'openid email profile '
+              }
             ),
           },
           {
