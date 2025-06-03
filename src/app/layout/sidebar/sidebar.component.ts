@@ -54,9 +54,9 @@ export class SidebarComponent implements OnInit {
       );
       if (user) {
         // Send the ID token to your backend
-        const response = await this.googleService.loginWithGoogle(user.idToken);
-        console.log('Backend response:', response);
-        // Store user details in localStorage or a service
+        // const response = await this.googleService.loginWithGoogle(user.idToken);
+        // console.log('Backend response:', response);
+        // // Store user details in localStorage or a service
         localStorage.setItem('user', JSON.stringify(user));
       }
     } catch (error) {
