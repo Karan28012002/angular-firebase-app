@@ -2,19 +2,19 @@
   <mat-icon>support_agent</mat-icon>
 </button>
 <mat-menu #supportMenu="matMenu">
-  <button mat-menu-item>
+  <button mat-menu-item (click)="navigateTo('/help')">
     <mat-icon>help_outline</mat-icon>
     <span>Help</span>
   </button>
-  <button mat-menu-item>
+  <button mat-menu-item (click)="console.log('Privacy option clicked')">
     <mat-icon>privacy_tip</mat-icon>
     <span>Privacy</span>
   </button>
-  <button mat-menu-item>
+  <button mat-menu-item (click)="console.log('Contact option clicked')">
     <mat-icon>contact_mail</mat-icon>
     <span>Contact</span>
   </button>
-  <button mat-menu-item>
+  <button mat-menu-item (click)="console.log('Email option clicked')">
     <mat-icon>email</mat-icon>
     <span>Email</span>
   </button>

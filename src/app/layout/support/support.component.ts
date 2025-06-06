@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-support',
@@ -20,12 +21,17 @@ export class SupportComponent {
     message: ''
   };
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   // Placeholder for the submit logic
   onSubmit() {
     console.log('Support request submitted:', this.supportRequest);
     // Here you would typically call a service to submit the support request
+  }
+
+  // Method to handle navigation
+  navigateTo(route: string) {
+    this.router.navigate([route]);
   }
 
 }
