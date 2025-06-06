@@ -19,3 +19,28 @@
     <span>Email</span>
   </button>
 </mat-menu>
+
+<div class="support-container">
+  <h2>Support</h2>
+
+  <p>If you need support, please fill out the form below or contact us via email or phone.</p>
+
+  <div class="contact-info">
+    <p>Email: support@example.com</p>
+    <p>Phone: +1 123 456 7890</p>
+  </div>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="subject">Subject:</label>
+      <input type="text" id="subject" name="subject" [(ngModel)]="supportRequest.subject" required>
+    </div>
+
+    <div class="form-group">
+      <label for="message">Message:</label>
+      <textarea id="message" name="message" rows="5" [(ngModel)]="supportRequest.message" required></textarea>
+    </div>
+
+    <button type="submit">Submit Request</button>
+  </form>
+</div>

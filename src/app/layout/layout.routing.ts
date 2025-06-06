@@ -19,6 +19,23 @@ const routes: Routes = [
             (m) => m.AdminPanelComponent
           ),
       },
+      {
+        path: 'profile-settings',
+        loadComponent: () =>
+          import('./profile-settings/profile-settings.component').then(
+            (m) => m.ProfileSettingsComponent
+          ),
+      },
+      {
+        path: 'support',
+        loadComponent: () =>
+          import('./support/support.component').then((m) => m.SupportComponent),
+      },
+      {
+        path: 'help',
+        loadComponent: () =>
+          import('./help/help.component').then((m) => m.HelpComponent),
+      },
     ],
   },
 ];

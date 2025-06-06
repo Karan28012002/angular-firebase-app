@@ -1,12 +1,4 @@
-.support-fab {
-  position: fixed;
-  bottom: 32px;
-  right: 32px;
-  z-index: 2000;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-}
-
-.support-container {
+.profile-settings-container {
   padding: 20px;
   max-width: 600px;
   margin: 0 auto;
@@ -17,19 +9,6 @@ h2 {
   text-align: center;
   margin-bottom: 20px;
   color: #333;
-}
-
-.contact-info {
-  margin-bottom: 20px;
-  padding: 15px;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  background-color: #f9f9f9;
-
-  p {
-    margin: 5px 0;
-    color: #555;
-  }
 }
 
 .form-group {
@@ -44,12 +23,13 @@ label {
 }
 
 input[type="text"],
-textarea {
+input[type="email"],
+input[type="password"] {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 button[type="submit"] {
