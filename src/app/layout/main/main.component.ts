@@ -65,7 +65,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
       if (this.loggedIn && !wasLoggedIn) {
         console.log('Login detected, attempting to open sidebar with setTimeout and navigate to Admin');
-        this.router.navigate(['/landing/Admin']);
+        this.router.navigate(['/Admin']);
 
         setTimeout(() => {
           console.log('setTimeout callback executed');

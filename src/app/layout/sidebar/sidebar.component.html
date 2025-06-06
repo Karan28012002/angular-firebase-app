@@ -1,18 +1,36 @@
 <div class="sidebar-nav">
   <div class="sidebar-user" *ngIf="user">
-    <img [src]="user.photoUrl" alt="Profile picture" class="sidebar-user-avatar" *ngIf="user.photoUrl">
+    <img
+      [src]="user.photoUrl"
+      alt="Profile picture"
+      class="sidebar-user-avatar"
+      *ngIf="user.photoUrl"
+    />
     <div class="sidebar-user-info">
       <div class="sidebar-user-name">{{ user.name }}</div>
       <div class="sidebar-user-email">{{ user.email }}</div>
     </div>
   </div>
   <nav class="sidebar-links">
-    <a mat-list-item routerLink="/landing/Admin" routerLinkActive="active"><mat-icon>dashboard</mat-icon> Dashboard</a>
-    <a mat-list-item routerLink="/profile" routerLinkActive="active"><mat-icon>person</mat-icon> Profile</a>
-    <a mat-list-item routerLink="/settings" routerLinkActive="active"><mat-icon>settings</mat-icon> Settings</a>
-    <a mat-list-item routerLink="/help" routerLinkActive="active"><mat-icon>help_outline</mat-icon> Help</a>
+    <a mat-list-item routerLink="/Admin" routerLinkActive="active"
+      ><mat-icon>dashboard</mat-icon> Dashboard</a
+    >
+    <a mat-list-item routerLink="/profile" routerLinkActive="active"
+      ><mat-icon>person</mat-icon> Profile</a
+    >
+    <a mat-list-item routerLink="/settings" routerLinkActive="active"
+      ><mat-icon>settings</mat-icon> Settings</a
+    >
+    <a mat-list-item routerLink="/help" routerLinkActive="active"
+      ><mat-icon>help_outline</mat-icon> Help</a
+    >
   </nav>
-  <button mat-raised-button color="warn" class="sidebar-signout-btn" (click)="signOut()">
+  <button
+    mat-raised-button
+    color="warn"
+    class="sidebar-signout-btn"
+    (click)="signOut()"
+  >
     <mat-icon>logout</mat-icon>&nbsp; Sign Out
   </button>
 </div>
