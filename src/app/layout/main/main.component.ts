@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
@@ -87,6 +87,16 @@ export class MainComponent implements OnInit, OnDestroy {
         this.opened = false;
       }
     });
+  }
+
+  // Host listener for the beforeunload event
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: BeforeUnloadEvent) {
+    if (this.loggedIn) {
+      // Setting returnValue to any non-empty string triggers the browser's default warning.
+      // The custom message will likely not be displayed by modern browsers.
+      event.returnValue = 'You may be logged out if you leave or refresh this page.';
+    }
   }
 
   toggleSidebar() {
