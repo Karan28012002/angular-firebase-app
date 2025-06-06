@@ -8,7 +8,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { GoogleAuthService } from '../../core/services/google-auth.service';
 import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 
@@ -34,7 +34,8 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private socialAuthService: SocialAuthService,
-    private googleService: GoogleAuthService
+    private googleService: GoogleAuthService,
+    private router:Router
   ) {}
 
   ngOnInit() {
@@ -48,7 +49,9 @@ export class SidebarComponent implements OnInit {
 
   signOut() {
     this.socialAuthService.signOut();
+
     this.user = null;
     this.loggedIn = false;
+    this.router.navigate(['/'])
   }
 }

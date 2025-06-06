@@ -20,15 +20,6 @@
           (error)="handleGoogleLoginError()">
         </asl-google-signin-button>
       </div>
-
-      <div class="divider">
-        <span>or</span>
-      </div>
-
-      <div class="info-section">
-        <p>Don't have an account? <a  class="signup-link" (click)="openRegister()">Sign up</a></p>
-        <p class="privacy-note">By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
-      </div>
     </div>
   </div>
 </div>
@@ -64,6 +55,7 @@
 </div>
 
 <div class="content-user-wrapper" *ngIf="loggedIn && userDetails">
+  
   <div class="user-profile-card">
     <img [src]="userDetails.photos?.[0]?.url || user?.photoUrl" alt="Profile" class="profile-pic">
     <h2>{{ userDetails.names?.[0]?.displayName || user?.name }}</h2>
@@ -80,3 +72,6 @@
     <button mat-raised-button color="warn" (click)="signOut()">Sign Out</button>
   </div>
 </div>
+
+
+

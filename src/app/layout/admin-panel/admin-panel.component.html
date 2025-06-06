@@ -1,87 +1,140 @@
-<div class="admin-panel-container">
-    <h2>Admin Dashboard</h2>
-  
-    <mat-grid-list [cols]="gridCols" rowHeight="200px" gutter="16">
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <mat-card class="dashboard-card">
-          <mat-card-header>
-            <mat-card-title>Total Users</mat-card-title>
-          </mat-card-header>
-          <mat-card-content class="dashboard-card-content">
-            <div class="card-value">{{ userStats.totalUsers }}</div>
-            <div class="card-description">Registered users</div>
-          </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-  
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <mat-card class="dashboard-card">
-          <mat-card-header>
-            <mat-card-title>Active Sessions</mat-card-title>
-          </mat-card-header>
-          <mat-card-content class="dashboard-card-content">
-            <div class="card-value">{{ userStats.activeSessions }}</div>
-            <div class="card-description">Currently logged in</div>
-          </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-  
-      <mat-grid-tile [colspan]="1" [rowspan]="1">
-        <mat-card class="dashboard-card">
-          <mat-card-header>
-            <mat-card-title>Recent Registrations</mat-card-title>
-          </mat-card-header>
-          <mat-card-content class="dashboard-card-content">
-             <div class="card-value">{{ userStats.recentRegistrations }}</div>
-            <div class="card-description">Last 7 days</div>
-          </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-  
-       <mat-grid-tile [colspan]="recentActivityColspan" [rowspan]="1">
-        <mat-card class="dashboard-card">
-          <mat-card-header>
-            <mat-card-title>Recent User Activity</mat-card-title>
-          </mat-card-header>
-          <mat-card-content class="dashboard-card-content">
-             <ul>
-              <li *ngFor="let activity of recentActivities">
-                {{ activity.user }} - {{ activity.action }} at {{ activity.time | date:'shortTime' }}
-              </li>
-             </ul>
-          </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-  
-       <mat-grid-tile [colspan]="userListColspan" [rowspan]="2">
-        <mat-card class="dashboard-card">
-          <mat-card-header>
-            <mat-card-title>User List</mat-card-title>
-          </mat-card-header>
-          <mat-card-content class="dashboard-card-content user-list-card">
-            <mat-list>
-              <mat-list-item *ngFor="let user of userList">
-                <img matListItemAvatar [src]="user.avatar" alt="User Avatar">
-                <div matListItemTitle>{{ user.name }}</div>
-                <div matListItemLine>{{ user.email }}</div>
-              </mat-list-item>
-            </mat-list>
-          </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-  
-       <mat-grid-tile [colspan]="systemStatusColspan" [rowspan]="2">
-        <mat-card class="dashboard-card">
-          <mat-card-header>
-            <mat-card-title>System Status</mat-card-title>
-          </mat-card-header>
-          <mat-card-content class="dashboard-card-content">
-            <p>Database Status: <span [ngClass]="systemStatus.dbStatus === 'Online' ? 'status-online' : 'status-offline'">{{ systemStatus.dbStatus }}</span></p>
-            <p>API Service: <span [ngClass]="systemStatus.apiStatus === 'Online' ? 'status-online' : 'status-offline'">{{ systemStatus.apiStatus }}</span></p>
-            <p>Last Updated: {{ systemStatus.lastUpdated | date:'short' }}</p>
-          </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-  
-    </mat-grid-list>
+<div class="admin-container">
+  <mat-card class="upload-card">
+    <mat-card-header>
+      <mat-card-title>Image Upload</mat-card-title>
+      <mat-card-subtitle>Upload images to create your gallery</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="upload-box"
+           [class.dragging]="isDragging"
+           (dragover)="onDragOver($event)"
+           (dragleave)="onDragLeave($event)"
+           (drop)="onDrop($event)"
+           *ngIf="!uploadLimitExceeded && !isLoading">
+        <input type="file"
+               #fileInput
+               (change)="onFileSelected($event)"
+               accept="image/*"
+               multiple
+               style="display: none">
+        
+        <div class="upload-content" (click)="fileInput.click()">
+          <mat-icon class="upload-icon">cloud_upload</mat-icon>
+          <p class="upload-text">Drag and drop images here or click to browse</p>
+          <p class="upload-hint">Supported formats: JPG, PNG, GIF</p>
+          <button mat-raised-button color="primary" class="browse-button">
+            <mat-icon>folder_open</mat-icon>
+            Browse Files
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="isLoading" class="loading-spinner">
+        <mat-spinner [diameter]="30"></mat-spinner>
+        <span>Uploading...</span>
+      </div>
+
+      <div *ngIf="uploadLimitExceeded" class="upload-error">
+        <mat-icon color="warn">error_outline</mat-icon>
+        <span>{{ uploadLimitError }}</span>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="gallery-card" *ngIf="uploadedImages.length > 0">
+    <mat-card-header>
+      <mat-card-title>Image Gallery</mat-card-title>
+      <mat-card-subtitle>{{uploadedImages.length}} images uploaded</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-grid-list cols="4" rowHeight="200px" gutterSize="16px">
+        <mat-grid-tile *ngFor="let image of uploadedImages; let i = index">
+          <div class="image-container"
+               (click)="viewImage(image.url)">
+            <img [src]="image.url" [alt]="image.name">
+            <div class="image-overlay">
+              <span class="image-name">{{image.name}}</span>
+              <button mat-icon-button
+                       class="action-button download-button"
+                       (click)="downloadImage(image.url, image.name); $event.stopPropagation();"
+                       matTooltip="Download image"
+                       matTooltipPosition="above">
+                 <mat-icon>download</mat-icon>
+               </button>
+               <button mat-icon-button
+                        class="action-button print-button"
+                        (click)="printImage(image.url); $event.stopPropagation();"
+                        matTooltip="Print image"
+                        matTooltipPosition="above">
+                 <mat-icon>print</mat-icon>
+               </button>
+               <button mat-icon-button
+                        class="action-button share-button"
+                        (click)="shareImage(image.url, image.name); $event.stopPropagation();"
+                        matTooltip="Share image"
+                        matTooltipPosition="above">
+                 <mat-icon>share</mat-icon>
+               </button>
+               <button mat-icon-button
+                        class="action-button convert-button"
+                        [matMenuTriggerFor]="convertMenu"
+                        (click)="$event.stopPropagation();"
+                        matTooltip="Convert image"
+                        matTooltipPosition="above">
+                 <mat-icon>transform</mat-icon>
+               </button>
+               <mat-menu #convertMenu="matMenu">
+                 <button mat-menu-item (click)="convertImage(image.url, image.name, 'png')">To PNG</button>
+                 <button mat-menu-item (click)="convertImage(image.url, image.name, 'jpeg')">To JPEG</button>
+                 <button mat-menu-item (click)="convertImage(image.url, image.name, 'webp')">To WebP</button>
+               </mat-menu>
+               <button mat-icon-button
+                        class="remove-button"
+                        (click)="removeImage(i); $event.stopPropagation();"
+                        matTooltip="Remove image"
+                        matTooltipPosition="above">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Converted Images Section -->
+  <div *ngIf="convertedImages.length > 0" class="converted-images-section">
+    <h2>Converted Images</h2>
+    <div class="image-grid">
+      <mat-card *ngFor="let image of convertedImages; let i = index" class="image-card">
+        <img mat-card-image [src]="image.url" [alt]="'Converted ' + image.name">
+        <mat-card-content>
+          <p class="image-name">{{ image.name }}</p>
+          <p class="image-info">Original: {{ image.originalName }} ({{ image.format }})</p>
+        </mat-card-content>
+        <mat-card-actions class="image-actions">
+          <button mat-icon-button (click)="viewImage(image.url)" matTooltip="View Image" aria-label="View converted image">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button (click)="downloadImage(image.url, image.name)" matTooltip="Download Image" aria-label="Download converted image">
+            <mat-icon>download</mat-icon>
+          </button>
+           <button mat-icon-button (click)="removeConvertedImage(i)" color="warn" matTooltip="Remove from List" aria-label="Remove converted image from list">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
   </div>
+
+  <!-- Fullscreen Image Overlay -->
+  <div *ngIf="selectedImage" class="image-overlay">
+    <div class="overlay-content">
+      <img [src]="selectedImage" [alt]="'Fullscreen Image'">
+      <button mat-icon-button (click)="closeImage()" aria-label="Close image">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,137 +1,335 @@
-.admin-panel-container {
-    padding: 20px;
-    background-color: #f0f2f5; // Light background for the dashboard area
-    min-height: calc(100vh - 112px); // Adjust based on your header/footer height
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @media (max-width: 768px) {
+    padding: 16px;
   }
-  
-  h2 {
-    color: #3a006a; // Deep purple from theme
-    margin-bottom: 25px;
-    font-size: 2rem;
-    font-weight: 700;
+
+  @media (max-width: 480px) {
+    padding: 12px;
   }
+}
+
+.upload-card, .gallery-card, .converted-images-section .image-grid .image-card {
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.upload-box {
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 32px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #fafafa;
+  margin: 16px 0;
+
+  &:hover {
+    border-color: #2196f3;
+    background-color: #f5f5f5;
+  }
+
+  &.dragging {
+    border-color: #2196f3;
+    background-color: #e3f2fd;
+  }
+
+  @media (max-width: 768px) {
+    padding: 24px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
+}
+
+.upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.upload-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #2196f3;
+}
+
+.upload-text {
+  font-size: 18px;
+  color: #333;
+  margin: 0;
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
+}
+
+.upload-hint {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
+}
+
+.browse-button {
+  margin-top: 8px;
+  padding: 8px 24px;
   
-  .dashboard-card {
-    border-radius: 12px;
+  mat-icon {
+    margin-right: 8px;
+  }
+}
+
+.upload-progress {
+  margin-top: 16px;
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+.image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  padding: 16px 8px 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .image-name {
+    flex-grow: 1;
+    margin-right: 8px;
+    color: white;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 8px;
+    white-space: nowrap;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    display: flex; // Use flexbox for internal layout
-    flex-direction: column;
-  
-    mat-card-header {
-      padding: 15px 20px;
-      border-bottom: 1px solid #eee;
-      background-color: #fff;
-      mat-card-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #512da8; // Theme primary color
-      }
+    text-overflow: ellipsis;
+
+    @media (max-width: 480px) {
+       font-size: 12px;
+       margin-right: 4px;
     }
-  
-    .dashboard-card-content {
-      padding: 20px;
-      flex-grow: 1; // Allow content to take available space
-      display: flex; // Use flexbox for content layout
-      flex-direction: column;
-  
-      .card-value {
-        font-size: 2.5rem;
-        font-weight: 800;
-        color: #673ab7; // Theme accent color
-        margin-bottom: 5px;
-      }
-  
-      .card-description {
-        font-size: 0.9rem;
-        color: #757575;
-      }
-  
-      // Styles for the recent activity list
-      ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-  
-        li {
-          padding: 8px 0;
-          border-bottom: 1px solid #eee;
-          font-size: 0.95rem;
-          color: #555;
-  
-          &:last-child {
-            border-bottom: none;
-          }
-        }
-      }
-  
-      // Styles for the user list card
-      &.user-list-card {
-        padding: 0;
-  
-        mat-list {
-          padding: 0;
-  
-          mat-list-item {
-            padding: 10px 20px;
-            border-bottom: 1px solid #eee;
-  
-            &:last-child {
-              border-bottom: none;
-            }
-  
-            img[matListItemAvatar] {
-              border-radius: 50%;
-              margin-right: 15px;
-              border: 1px solid #ddd;
-            }
-  
-            .mat-list-item-title {
-              font-weight: 600;
-              color: #333;
-            }
-  
-            .mat-list-item-line {
-              color: #666;
-              font-size: 0.9rem;
-            }
-          }
-        }
-      }
-  
-      // Styles for system status
-      p {
-        margin-bottom: 10px;
-        font-size: 1rem;
+  }
+
+  .button-group {
+    display: flex;
+    align-items: center;
+
+    .mat-icon-button {
+       width: 24px;
+       height: 24px;
+       line-height: 24px;
+       font-size: 16px;
+       margin: 0 2px;
+
+       mat-icon {
+         font-size: 16px;
+       }
+    }
+  }
+}
+
+.image-container:hover .image-overlay {
+  opacity: 1;
+}
+
+.action-button {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  opacity: 0;
+  transition: all 0.3s ease;
+  margin: 0 4px;
+  border-radius: 50%;
+}
+
+.image-container:hover .action-button {
+  opacity: 1;
+}
+
+.remove-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(255, 255, 255, 0.9);
+  opacity: 0;
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  font-size: 18px;
+
+  mat-icon {
+     font-size: 18px;
+  }
+
+  &:hover {
+    background-color: #fff;
+    transform: scale(1.1);
+  }
+}
+
+.image-container:hover .remove-button {
+  opacity: 1;
+}
+
+mat-grid-list, .converted-images-section .image-grid {
+  margin: 16px 0;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+  }
+}
+
+mat-card-title {
+  margin-bottom: 8px;
+}
+
+mat-card-subtitle {
+  margin-bottom: 16px;
+}
+
+.upload-error {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  margin: 16px 0;
+  border: 1px solid #ff9800;
+  border-radius: 4px;
+  background-color: #fff3e0;
+  color: #f57c00;
+  font-weight: 500;
+
+  mat-icon {
+    margin-right: 8px;
+    color: #f57c00;
+  }
+}
+
+.converted-images-section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #eee;
+
+  h2 {
+    margin-bottom: 16px;
+    font-size: 20px;
+    color: #333;
+
+    @media (max-width: 480px) {
+       font-size: 18px;
+    }
+  }
+
+  .image-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+
+    .image-card {
+      .image-info {
+        font-size: 12px;
         color: #555;
-        
-        &:last-child {
-          margin-bottom: 0;
-        }
-  
-        span {
-          font-weight: 600;
-        }
+        margin-top: 4px;
+         @media (max-width: 480px) {
+            font-size: 10px;
+         }
       }
-  
-      .status-online {
-        color: #4caf50; // Green color for online status
-      }
-  
-      .status-offline {
-        color: #f44336; // Red color for offline status
-      }
+       .image-actions {
+        display: flex;
+        justify-content: space-around;
+        padding: 8px;
+         .mat-icon-button {
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            font-size: 16px;
+            margin: 0 2px;
+
+            mat-icon {
+              font-size: 16px;
+            }
+         }
+       }
     }
   }
-  
-  // Responsive adjustments for grid
-  mat-grid-list {
-    ::ng-deep .mat-grid-tile .mat-figure {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      width: 100%;
-      justify-content: flex-start; // Align content to the top
-      align-items: stretch; // Stretch content horizontally
+}
+
+.image-overlay.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .overlay-content {
+    max-width: 95%;
+    max-height: 95%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    img {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .mat-icon-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+       &:hover {
+         background-color: rgba(0, 0, 0, 0.7);
+       }
     }
   }
+}

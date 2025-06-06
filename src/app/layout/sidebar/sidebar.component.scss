@@ -142,30 +142,37 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 15px;
-  background: linear-gradient(to bottom, #673ab7, #512da8);
-  border-radius: 0 12px 12px 0;
-  min-width: 220px;
-  max-width: 260px;
+  padding: 20px 15px;
+  background-color: #3f51b5;
+  border-radius: 0;
+  min-width: 240px;
+  max-width: 280px;
   box-shadow: 3px 0 15px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   overflow-x: hidden;
+  transition: width 0.3s ease;
+
+  @media (max-width: 768px) {
+    min-width: 200px;
+    max-width: 240px;
+    padding: 15px 10px;
+  }
 }
 
 .sidebar-user {
   display: flex;
   align-items: center;
-  padding-bottom: 15px;
-  margin-bottom: 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   flex-shrink: 0;
 
   .sidebar-user-avatar {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     margin-right: 15px;
-    border: 2px solid rgba(255, 255, 255, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.6);
     object-fit: cover;
   }
 
@@ -177,19 +184,20 @@
     flex-grow: 1;
 
     .sidebar-user-name {
-      font-weight: 600;
-      font-size: 1.1rem;
-      margin-bottom: 3px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      margin-bottom: 4px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .sidebar-user-email {
-      font-size: 0.85rem;
-      opacity: 0.9;
+      font-size: 0.9rem;
+      opacity: 1;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      color: rgba(255, 255, 255, 0.8);
     }
   }
 }
@@ -197,26 +205,27 @@
 .sidebar-links {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 4px;
+  margin-bottom: 24px;
   flex-grow: 1;
 
   a[mat-list-item] {
     display: flex;
     align-items: center;
-    padding: 10px 12px;
-    border-radius: 6px;
-    color: #e1bee7;
+    padding: 12px 15px;
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.8);
     font-weight: 500;
     font-size: 1rem;
     text-decoration: none;
     transition: background-color 0.2s, color 0.2s;
     overflow: hidden;
     width: 100%;
+    box-sizing: border-box;
 
     mat-icon {
       margin-right: 12px;
-      color: #e1bee7;
+      color: rgba(255, 255, 255, 0.8);
       font-size: 20px;
     }
 
@@ -229,12 +238,17 @@
 
     &.active,
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.15);
       color: #fff;
 
       mat-icon {
         color: #fff;
       }
+    }
+
+    .mat-list-item-content {
+        display: flex;
+        align-items: center;
     }
   }
 }
@@ -242,17 +256,12 @@
 .sidebar-signout-btn {
   margin-top: auto;
   width: 100%;
-  border-radius: 6px;
+  border-radius: 4px;
   font-weight: 600;
   font-size: 1rem;
-  background: #ff5252;
+  background-color: #ff4081;
   color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  transition: background-color 0.2s, box-shadow 0.2s;
-
-  &:hover {
-    background-color: #e53935;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  }
+  padding: 10px 15px;
 }
 

@@ -1,17 +1,16 @@
-
-
 .sidenav {
   width: 280px;
-  padding: 24px;
-  background: #f5f5f5;
+  padding: 0;
+  background-color: #f5f5f5;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    width: 240px;
+  }
 }
 
-
-
-
- .main-layout, .main-content {
+.main-layout, .main-content {
   height: 100vh;
   min-height: 100vh;
   overflow: hidden;
@@ -21,29 +20,29 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: calc(100% - 0px); // adjust if you have a sidenav width
+  width: 100%;
   z-index: 100;
+  transition: width 0.3s, margin-left 0.3s;
 }
 
 .fixed-footer {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: calc(100% - 0px); // adjust if you have a sidenav width
+  width: 100%;
   z-index: 100;
+  transition: width 0.3s, margin-left 0.3s;
 }
 
 .scrollable-content {
   position: absolute;
-  top: 64px; // height of your header
-  bottom: 56px; // height of your footer
+  top: 64px;
+  bottom: 56px;
   left: 0;
   right: 0;
   overflow-y: auto;
-  /* Remove or reduce padding if not needed */
-  padding: 0;
+  padding: 24px;
   background: transparent;
-  min-height: unset; // REMOVE min-height if present
   box-sizing: border-box;
 }
 
@@ -54,6 +53,43 @@
 
 .sidenav-open .fixed-header,
 .sidenav-open .fixed-footer {
-  margin-left: 280px; // width of your sidenav
-  width: calc(100% - 280px);
+  @media (min-width: 769px) {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+  }
+}
+
+.sidenav-open .scrollable-content {
+  @media (min-width: 769px) {
+    left: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .scrollable-content {
+    padding: 16px;
+    top: 56px;
+    bottom: 56px;
+  }
+}
+
+.toggle-btn {
+  margin-right: 16px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.main-layout mat-sidenav.sidenav {
+  // Ensure these styles apply to the actual sidenav element
+  // You might need to adjust the selector based on how mat-sidenav is rendered
+}
+
+.main-layout mat-sidenav-content.main-content {
+  // Ensure these styles apply to the actual content element
 }

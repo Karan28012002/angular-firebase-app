@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'landing',
+    path: '',
     loadComponent: () =>
       import('./main/main.component').then((m) => m.MainComponent),
     children: [
@@ -21,11 +21,6 @@ const routes: Routes = [
       },
     ],
   },
-  {
-    path: '',
-    redirectTo: 'landing',
-    pathMatch: 'full'
-  }
 ];
 
 @NgModule({

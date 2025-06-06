@@ -20,6 +20,9 @@ import {
 } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-content',
@@ -32,7 +35,8 @@ import { Observable } from 'rxjs';
     MatButtonModule,
     GoogleSigninButtonModule,
     FormsModule,
-    HttpClientModule,
+    MatGridListModule,
+    MatCardModule
   ],
   templateUrl: './content.component.html',
   styleUrl: './content.component.scss',
@@ -48,11 +52,84 @@ export class ContentComponent implements OnInit {
   loggedIn = false;
   user: SocialUser | null = null;
   userDetails: any = null;
+  uploadedImages: { url: string; name: string }[] = [];
+  isDragging = false;
+  uploadProgress = 0;
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragging = true;
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragging = false;
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragging = false;
+
+    const files = event.dataTransfer?.files;
+    if (files) {
+      this.handleFiles(files);
+    }
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.handleFiles(input.files);
+    }
+  }
+
+  private handleFiles(files: FileList): void {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.type.startsWith('image/')) {
+        this.simulateUpload(file);
+      } else {
+        this.snackBar.open('Please upload only image files', 'Close', {
+          duration: 3000
+        });
+      }
+    }
+  }
+
+  private simulateUpload(file: File): void {
+    // Simulate upload progress
+    this.uploadProgress = 0;
+    const interval = setInterval(() => {
+      this.uploadProgress += 10;
+      if (this.uploadProgress >= 100) {
+        clearInterval(interval);
+        // Create a URL for the uploaded image
+        const imageUrl = URL.createObjectURL(file);
+        this.uploadedImages.push({
+          url: imageUrl,
+          name: file.name
+        });
+        this.snackBar.open('Image uploaded successfully', 'Close', {
+          duration: 3000
+        });
+      }
+    }, 200);
+  }
+
+  removeImage(index: number): void {
+    this.uploadedImages.splice(index, 1);
+    this.snackBar.open('Image removed', 'Close', {
+      duration: 3000
+    });
+  }
   constructor(
     private sidebarService: SidebartoggleService,
     private emailService: EmailService,
     private socialAuthService: SocialAuthService,
-    private http: HttpClient
+    private http: HttpClient,private snackBar: MatSnackBar
   ) {}
   ngOnInit() {
     // Subscribe to auth state changes

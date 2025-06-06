@@ -39,6 +39,59 @@ export class EmailService {
       'x-api-key': 'Abhay@123',
     });
   
-    return this.http.post<any>(`${environment.liveUrl}`, body, { headers });
+    return this.http.post<any>(`${environment.liveEmailUrl}`, body, { headers });
+  }
+
+  uploadImageLink(email: string, imageLink: string): Observable<any> {
+    const body = {
+      email: email,
+      imageLink: imageLink,
+    };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-api-key': 'Abhay@123',
+    });
+
+    return this.http.post<any>(`${environment.imageUploadUrl}`, body, { headers });
+  }
+
+  getImageUploadLimit(email: string): Observable<any> {
+    const params = new HttpParams().set('email', email);
+
+    const headers = new HttpHeaders({
+      'x-api-key': 'Abhay@123',
+    });
+
+    return this.http.get<any>(`${environment.imageLimitUpload}`, { headers, params });
+  }
+
+  getUserIMages(email: string): Observable<any> {
+    const params = new HttpParams().set('email', email);
+    const headers = new HttpHeaders({
+      'x-api-key': 'Abhay@123',
+    });
+
+    return this.http.get<any>(`${environment.getUserImages}`, { headers, params });
+  }
+
+  // Method to call backend API for image conversion
+  convertImage(imageUrl: string, targetFormat: string): Observable<any> {
+    const body = {
+      imageUrl: imageUrl,
+      targetFormat: targetFormat
+    };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-api-key': 'Abhay@123', // Use your API key
+    });
+
+    // Assuming you have environment.convertImageUrl defined with the backend endpoint
+    if (!environment.convertImageUrl) {
+      return new Observable(observer => {
+        observer.error(new Error('Conversion API URL not defined in environment.'));
+      });
+    }
+
+    return this.http.post<any>(`${environment.convertImageUrl}`, body, { headers });
   }
 }
