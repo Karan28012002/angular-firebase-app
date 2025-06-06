@@ -34,4 +34,17 @@ export class SupportComponent {
     this.router.navigate([route]);
   }
 
+  // Methods for menu item clicks (placeholders)
+  onPrivacyClick() {
+    console.log('Privacy option clicked');
+  }
+
+  onContactClick() {
+    console.log('Contact option clicked');
+  }
+
+  onEmailClick() {
+    console.log('Email option clicked');
+  }
+
 }

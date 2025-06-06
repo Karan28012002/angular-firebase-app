@@ -6,15 +6,15 @@
     <mat-icon>help_outline</mat-icon>
     <span>Help</span>
   </button>
-  <button mat-menu-item (click)="console.log('Privacy option clicked')">
+  <button mat-menu-item (click)="onPrivacyClick()">
     <mat-icon>privacy_tip</mat-icon>
     <span>Privacy</span>
   </button>
-  <button mat-menu-item (click)="console.log('Contact option clicked')">
+  <button mat-menu-item (click)="onContactClick()">
     <mat-icon>contact_mail</mat-icon>
     <span>Contact</span>
   </button>
-  <button mat-menu-item (click)="console.log('Email option clicked')">
+  <button mat-menu-item (click)="onEmailClick()">
     <mat-icon>email</mat-icon>
     <span>Email</span>
   </button>
@@ -26,7 +26,7 @@
   <p>If you need support, please fill out the form below or contact us via email or phone.</p>
 
   <div class="contact-info">
-    <p>Email: support@example.com</p>
+    <p>Email: support&#64;example.com</p>
     <p>Phone: +1 123 456 7890</p>
   </div>
 
