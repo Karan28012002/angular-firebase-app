@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  HostListener,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
@@ -12,10 +18,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { SidebartoggleService } from '../../core/services/sidebartoggle.service';
 import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 import { Router } from '@angular/router';
+import { Product } from '../../store/models/product.models';
+import { Store } from '@ngrx/store';
+import * as ProductActions from '../../store/actions/product.actions';
+import * as fromProduct from '../../store/selectors/product.selector';
 
 @Component({
   selector: 'app-main',
@@ -47,13 +57,25 @@ export class MainComponent implements OnInit, OnDestroy {
   loggedIn = false;
   user: SocialUser | null = null;
 
-  constructor(private sidebarService: SidebartoggleService, private authService: SocialAuthService, private router: Router) {
+  constructor(
+    private sidebarService: SidebartoggleService,
+    private store: Store,
+    private authService: SocialAuthService,
+    private router: Router
+  ) {
     this.sidebarSub = this.sidebarService.sidebarOpen$.subscribe(() => {
       this.toggleSidebar();
     });
   }
+  products$: Observable<Product[]> | undefined;
+  loading$: Observable<boolean> | undefined;
+  error$: Observable<any> | undefined;
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.store.dispatch(ProductActions.loadProducts());
+    this.products$ = this.store.select(fromProduct.selectProducts);
+    this.loading$ = this.store.select(fromProduct.selectLoading);
+    this.error$ = this.store.select(fromProduct.selectError);
     console.log('MainComponent ngOnInit');
     this.authStateSub = this.authService.authState.subscribe((user) => {
       console.log('authState subscription triggered');
@@ -64,7 +86,9 @@ export class MainComponent implements OnInit, OnDestroy {
       console.log(`loggedIn: ${this.loggedIn}, wasLoggedIn: ${wasLoggedIn}`);
 
       if (this.loggedIn && !wasLoggedIn) {
-        console.log('Login detected, attempting to open sidebar with setTimeout and navigate to Admin');
+        console.log(
+          'Login detected, attempting to open sidebar with setTimeout and navigate to Admin'
+        );
         this.router.navigate(['/Admin']);
 
         setTimeout(() => {
@@ -95,7 +119,8 @@ export class MainComponent implements OnInit, OnDestroy {
     if (this.loggedIn) {
       // Setting returnValue to any non-empty string triggers the browser's default warning.
       // The custom message will likely not be displayed by modern browsers.
-      event.returnValue = 'You may be logged out if you leave or refresh this page.';
+      event.returnValue =
+        'You may be logged out if you leave or refresh this page.';
     }
   }
 
@@ -106,7 +131,9 @@ export class MainComponent implements OnInit, OnDestroy {
       this.opened = this.sidenav.opened;
       console.log('Sidenav toggled');
     } else {
-      console.warn('toggleSidebar called but sidenav reference is NOT available');
+      console.warn(
+        'toggleSidebar called but sidenav reference is NOT available'
+      );
     }
   }
 

@@ -84,12 +84,3 @@
   color: rgba(0, 0, 0, 0.6);
   z-index: 1;
 }
-
-.main-layout mat-sidenav.sidenav {
-  // Ensure these styles apply to the actual sidenav element
-  // You might need to adjust the selector based on how mat-sidenav is rendered
-}
-
-.main-layout mat-sidenav-content.main-content {
-  // Ensure these styles apply to the actual content element
-}

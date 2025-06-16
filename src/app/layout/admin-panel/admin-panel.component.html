@@ -1,4 +1,28 @@
 <div class="admin-container">
+  <div class="pattern-lock-status" *ngIf="isPatternLocked">
+    <mat-icon>lock</mat-icon>
+    <span>Image upload is locked</span>
+    <button mat-raised-button color="primary" (click)="openPatternLock('validate')">
+      Unlock Pattern
+    </button>
+  </div>
+
+  <!-- NGRX Counter Demo Component -->
+  <app-counter></app-counter>
+<div style="width: 100%; height: 100vh;">
+  <iframe 
+    src="https://moco-frontend.vercel.app/" 
+    width="100%" 
+    height="100%" 
+    frameborder="0" 
+    style="border: none; overflow: hidden;" 
+    allowfullscreen>
+  </iframe>
+</div>
+
+  <!-- NGRX Product List Demo Component -->
+  <app-product-list></app-product-list>
+
   <mat-card class="upload-card">
     <mat-card-header>
       <mat-card-title>Image Upload</mat-card-title>
@@ -13,7 +37,9 @@
            *ngIf="!uploadLimitExceeded && !isLoading">
         <input type="file"
                #fileInput
-               (change)="onFileSelected($event)"
+               (change)="onFileSelected($event)"PS C:\Users\Karan> ping sql207.infinityfree.com
+               Ping request could not find host sql207.infinityfree.com. Please check the name and try again.
+               PS C:\Users\Karan>
                accept="image/*"
                multiple
                style="display: none">

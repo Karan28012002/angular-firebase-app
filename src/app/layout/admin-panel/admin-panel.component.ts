@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ImageUploadService } from '../../core/services/image-upload.service';
 import { finalize } from 'rxjs/operators';
 import { SupabaseService } from '../../core/services/supabase.service';
@@ -19,6 +20,9 @@ import { UserDataService } from '../../core/services/user-data.service';
 import { ImageConversionService } from '../../core/services/image-conversion.service';
 import { MatSidenav } from '@angular/material/sidenav';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import { PatternLockComponent } from '../../shared/components/pattern-lock/pattern-lock.component';
+import { CounterComponent } from '../../components/counter/counter.component';
+import { ProductListComponent } from '../../components/product-list/product-list.component';
 
 interface UploadResult {
   file: File;
@@ -42,7 +46,10 @@ interface UploadResult {
     MatSnackBarModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogModule,
+    CounterComponent,
+    ProductListComponent
   ],
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.scss']
@@ -85,6 +92,10 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   };
   public pieChartType: ChartType = 'pie';
 
+  isPatternLocked = true;
+  private userPattern: number[] | null = null;
+  displayPatternSetup = false;
+
   constructor(
     private snackBar: MatSnackBar,
     private imageUploadService: ImageUploadService,
@@ -92,7 +103,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     private authService: SocialAuthService,
     private emailService: EmailService,
     private userDataService: UserDataService,
-    private imageConversionService: ImageConversionService
+    private imageConversionService: ImageConversionService,
+    private dialog: MatDialog
   ) {
     this.userImages$ = this.userDataService.userImages$;
     this.isLoading$ = this.userDataService.isLoading$;
@@ -112,7 +124,93 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // authState subscription is in constructor
+    console.log('AdminPanelComponent ngOnInit called.');
+    this.loadUserPattern();
+    console.log('User pattern after load:', this.userPattern);
+    if (!this.userPattern) {
+      console.log('No user pattern found, initiating setup mode.');
+      this.displayPatternSetup = true;
+      this.openPatternLock('set');
+    }
+  }
+
+  private loadUserPattern(): void {
+    console.log('loadUserPattern called.');
+    const storedPattern = localStorage.getItem('userPattern');
+    if (storedPattern) {
+      this.userPattern = JSON.parse(storedPattern);
+      this.isPatternLocked = true;
+      console.log('Pattern loaded from localStorage:', this.userPattern);
+    } else {
+      console.log('No pattern found in localStorage.');
+    }
+  }
+
+  openPatternLock(mode: 'set' | 'validate'): void {
+    console.log(`Attempting to open pattern lock dialog in ${mode} mode.`);
+    const dialogRef = this.dialog.open(PatternLockComponent, {
+      width: '400px',
+      disableClose: true,
+      panelClass: 'pattern-lock-dialog-container',
+      data: { mode: mode, correctPattern: this.userPattern }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Pattern lock dialog closed, result:', result);
+      if (result) {
+        if (mode === 'set') {
+          this.userPattern = result.pattern;
+          localStorage.setItem('userPattern', JSON.stringify(result.pattern));
+          this.isPatternLocked = true; // Lock after setting pattern
+          this.displayPatternSetup = false;
+          this.snackBar.open('Pattern successfully set! Please unlock to upload.', 'Close', { duration: 3000 });
+        } else { // validate mode
+          if (result.isValid) {
+            this.isPatternLocked = false;
+            this.snackBar.open('Pattern correct! You can now upload images.', 'Close', { duration: 3000 });
+          } else {
+            this.isPatternLocked = true; // Keep locked if validation failed
+            this.snackBar.open('Incorrect pattern. Please try again.', 'Close', { duration: 3000 });
+          }
+        }
+      } else {
+        // Dialog was closed without a pattern being set/validated (e.g., user pressed escape)
+        if (mode === 'set' && !this.userPattern) {
+          // If it was setup mode and no pattern was set, keep setup flag true
+          this.displayPatternSetup = true;
+          this.snackBar.open('Pattern setup cancelled. Please set a pattern to continue.', 'Close', { duration: 5000 });
+        } else if (mode === 'validate') {
+          // If validate mode, ensure it remains locked
+          this.isPatternLocked = true;
+        }
+      }
+    });
+  }
+
+  private handleFiles(files: FileList): void {
+    console.log('handleFiles called, isPatternLocked:', this.isPatternLocked);
+    const filesArray = Array.from(files);
+    if (filesArray.length === 0) {
+        return;
+    }
+
+    if (this.isPatternLocked) {
+        this.snackBar.open('Please unlock the pattern first to upload images.', 'Close', { duration: 3000 });
+        this.openPatternLock('validate'); // Open in validate mode
+        return;
+    }
+
+    if (!this.user || !this.user.id || !this.user.email) {
+        this.snackBar.open('Please log in to upload images.', 'Close', { duration: 3000 });
+        return;
+    }
+
+    if (this.uploadLimitExceeded) {
+         this.snackBar.open(`Upload limit exceeded: ${this.uploadLimitError}`, 'Close', { duration: 5000 });
+         return;
+    }
+
+    this.processImageUploads(filesArray);
   }
 
   private updateChartData(images: { url: string; name: string }[]): void {
@@ -159,25 +257,6 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     if (input.files) {
       this.handleFiles(input.files);
     }
-  }
-
-  private handleFiles(files: FileList): void {
-    const filesArray = Array.from(files);
-    if (filesArray.length === 0) {
-        return;
-    }
-
-    if (!this.user || !this.user.id || !this.user.email) {
-        this.snackBar.open('Please log in to upload images.', 'Close', { duration: 3000 });
-        return;
-    }
-
-    if (this.uploadLimitExceeded) {
-         this.snackBar.open(`Upload limit exceeded: ${this.uploadLimitError}`, 'Close', { duration: 5000 });
-         return;
-    }
-
-    this.processImageUploads(filesArray);
   }
 
   private processImageUploads(filesArray: File[]): void {

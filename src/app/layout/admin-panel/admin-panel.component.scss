@@ -333,3 +333,47 @@ mat-card-subtitle {
     }
   }
 }
+
+.pattern-lock-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  margin-bottom: 16px;
+
+  mat-icon {
+    color: #f44336;
+  }
+
+  span {
+    flex: 1;
+    color: #666;
+  }
+
+  button {
+    min-width: 120px;
+  }
+}
+
+.pattern-lock-dialog {
+  padding: 20px;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+}
+
+::ng-deep .pattern-lock-dialog-container {
+  .mat-mdc-dialog-container {
+    padding: 0;
+  }
+
+  .mat-mdc-dialog-content {
+    padding: 0;
+    max-height: none;
+  }
+}

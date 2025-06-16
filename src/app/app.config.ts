@@ -1,4 +1,8 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideZoneChangeDetection,
+  isDevMode,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import {
   SocialAuthServiceConfig,
@@ -11,6 +15,12 @@ import {
   withEventReplay,
 } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { counterReducer } from './store/counter/counter.reducer';
+import { productReducer } from './store/product/product.reducer';
+import { ProductEffects } from './store/product/product.effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,6 +28,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withFetch()),
     provideClientHydration(withEventReplay()),
+    provideStore({
+      counter: counterReducer,
+      product: productReducer
+    }),
+    provideEffects([ProductEffects]),
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
@@ -28,7 +43,7 @@ export const appConfig: ApplicationConfig = {
             provider: new GoogleLoginProvider(
               '363830819140-1n88f6d2jlbqlha6tc1vf4dd1gkmlf9m.apps.googleusercontent.com',
               {
-                scopes: 'openid email profile '
+                scopes: 'openid email profile ',
               }
             ),
           },
@@ -42,5 +57,6 @@ export const appConfig: ApplicationConfig = {
         },
       } as SocialAuthServiceConfig,
     },
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };
